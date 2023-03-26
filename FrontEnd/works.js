@@ -65,10 +65,39 @@ buttonHotel.addEventListener("click", function () {
 
 
 /** connexion */
-function formEmpty (){
-    
-}
-const buttonConnect = document.querySelector(".form-button-validation");
-buttonConnect.addEventListener("click",function () {
 
-})
+function testUser() {  
+
+const buttonConnect = document.querySelector(".form-button-validation");
+buttonConnect.addEventListener("submit", function() {
+    const identifier = {
+        email: e.target.querySelector("[name=email]"), value,
+        password: e.target.querySelector("[name=password]"), value,
+    }
+    const payload = JSON.stringify(identifier);
+    const idresponse = fetch("http://localhost:5678/api/users/login", {
+        method: "POST",
+        headers: { "content-Type": "application/json" },
+        body: payload
+    })
+        .then(Response => {
+            if (Response.status != 200) {
+                
+                alert("Erreur dans l’identifiant ou le mot de passe");
+            }
+            else {
+                const token = Response.json();
+                windows.localStorage.setItem("token", JSON.stringify(token) );
+                location.replace('http://127.0.0.1:5500/FrontEnd/index.html');
+                /**  changement de page */
+                /** récupération et stockage token */
+                    
+            }
+        })
+        .catch(error => {} 
+        )
+    })
+
+}
+
+testUser();

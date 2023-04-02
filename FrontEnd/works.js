@@ -1,11 +1,41 @@
+import { createEditButton } from "./indexEdit.js";
+let token = window.localStorage.getItem('token');
+if (token != null) {
+    createEditButton();
+}
+
 const recoverWorks = await fetch("http://localhost:5678/api/works");
 const works = await recoverWorks.json();
 const setWorks = new Set(works);
-console.log(setWorks);                  /*  A suprimmer  */
-console.log([...setWorks]);                /*  A suprimmer  */
+                
 const worksOne = [...setWorks];
-console.log(worksOne);
 
+
+const recoverButtons = await fetch("http://localhost:5678/api/categories");
+const buttons = await recoverButtons.json();
+console.log(buttons);
+function generateButtons(Buttons){
+        const divButton = document.querySelector(".button-box");
+        const buttonAll = document.createElement("button");
+        buttonAll.innerText = "Tous";
+        buttonAll.classList.add("btn-appearance");
+        buttonAll.classList.add("btn-all");
+        divButton.appendChild(buttonAll);
+
+    for (let i in Buttons){
+        const button = Buttons[i];
+        const divButtons = document.querySelector(".button-box");
+        const buttonElement = document.createElement("button");
+        buttonElement.innerText = button.name;
+        buttonElement.classList.add("btn-appearance");
+        buttonElement.classList.add(button.name.substring(0, 6));
+        divButtons.appendChild(buttonElement);
+    }
+    
+    
+}
+
+generateButtons(buttons);
 
 function generateWorks(works){
     for (let i in works){
@@ -27,13 +57,15 @@ function generateWorks(works){
 
 generateWorks(worksOne);
 
+
+
 /**  boutons  */
 const buttonAll = document.querySelector(".btn-all");
 buttonAll.addEventListener("click", function () {
     generateWorks(worksOne)
 });
 
-const buttonItems = document.querySelector(".btn-items");
+const buttonItems = document.querySelector(".Objets");
 buttonItems.addEventListener("click", function () {
     const itemsWorks = works.filter(function (work) {
         return work.categoryId == 1;
@@ -43,7 +75,7 @@ buttonItems.addEventListener("click", function () {
     generateWorks(itemsWorks);
 });
 
-const buttonApartment = document.querySelector(".btn-apartment");
+const buttonApartment = document.querySelector(".Appart");
 buttonApartment.addEventListener("click", function () {
     const apartmentWorks = works.filter(function (work) {
         return work.categoryId == 2;
@@ -53,7 +85,7 @@ buttonApartment.addEventListener("click", function () {
     generateWorks(apartmentWorks);
 });
 
-const buttonHotel = document.querySelector(".btn-hotel");
+const buttonHotel = document.querySelector(".Hotels");
 buttonHotel.addEventListener("click", function () {
     const hotelWorks = works.filter(function (work) {
         return work.categoryId == 3;
@@ -64,40 +96,5 @@ buttonHotel.addEventListener("click", function () {
 });
 
 
-/** connexion */
 
-function testUser() {  
 
-const buttonConnect = document.querySelector(".form-button-validation");
-buttonConnect.addEventListener("submit", function() {
-    const identifier = {
-        email: e.target.querySelector("[name=email]"), value,
-        password: e.target.querySelector("[name=password]"), value,
-    }
-    const payload = JSON.stringify(identifier);
-    const idresponse = fetch("http://localhost:5678/api/users/login", {
-        method: "POST",
-        headers: { "content-Type": "application/json" },
-        body: payload
-    })
-        .then(Response => {
-            if (Response.status != 200) {
-                
-                alert("Erreur dans l’identifiant ou le mot de passe");
-            }
-            else {
-                const token = Response.json();
-                windows.localStorage.setItem("token", JSON.stringify(token) );
-                location.replace('http://127.0.0.1:5500/FrontEnd/index.html');
-                /**  changement de page */
-                /** récupération et stockage token */
-                    
-            }
-        })
-        .catch(error => {} 
-        )
-    })
-
-}
-
-testUser();

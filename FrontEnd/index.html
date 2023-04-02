@@ -9,16 +9,19 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<script src="https://kit.fontawesome.com/3d2216f897.js" crossorigin="anonymous"></script>
 	<script type="module" src="works.js"></script>
 </head>
 <body>
+<div class="header-edit-mod"></div>	
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<li>login</li>
+			<li class="login">login</li>
+			<li class="logout">logout</li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -38,10 +41,10 @@
 	<section id="portfolio">
 		<h2>Mes Projets</h2>
 		<div class="button-box">
-			<button class="btn-all btn-appearance">Tous</button>
+			<!--<button class="btn-all btn-appearance">Tous</button>
 			<button class="btn-items btn-appearance">Objets</button>
 			<button class="btn-apartment btn-appearance">Appartements</button>
-			<button class="btn-hotel btn-appearance">Hôtels et restaurants</button>
+			<button class="btn-hotel btn-appearance">Hôtels et restaurants</button>-->
 		</div>
 		<div class="gallery">
 			<!--<figure>
@@ -103,6 +106,19 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
+	<aside id="fenetre-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="tittlemodal">
+		<div class="modal-wrapper">
+			<h2 id="tittlemodal">Galerie Photo</h2>
+			<div class="gallery-edit"></div>
+			<button>Ajouter une photo</button>
+			<button>Supprimer la galerie</button>
+		</div>
+	</aside>
+	<aside>
+		<div>
+			
+		</div>
+	</aside>
 </main>
 
 <footer>

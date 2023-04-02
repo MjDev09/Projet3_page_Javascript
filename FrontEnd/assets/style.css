@@ -112,7 +112,7 @@ li:hover {
 }
 
 #introduction article {
-	flex: 1
+	flex: 1;
 }
 #introduction h2 {
 	margin-bottom: 1em;
@@ -161,11 +161,11 @@ li:hover {
 	color: white;
 	background-color: #1D6154;
 }
-.btn-apartment{
+.Appart{
 	padding-right: 14px;
 	padding-left: 14px;
 }
-.btn-hotel{
+.Hotels{
 	padding-right: 9px;
 	padding-left: 9px;
 	margin-right: 0px;
@@ -265,17 +265,24 @@ footer nav ul {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-.form-button-validation{
+.paragraph-button{
 	display: flex;
-	border: none;
+	text-align: center;
 	justify-content: center;
+}
+
+.form-button-validation{
+	border: none;
+	margin-top: 7px;
+	margin-bottom: 28px;
+	padding-right: 39px;
+	padding-left: 39px;
 	height: 36px;
 	font-family: 'Syne';
 	font-style: normal;
 	font-weight: 700;
 	font-size: 14px;
 	line-height: 17px;
-	text-align: center;
 	color: #FFFFFF;
 	background: #1D6154;
 	border-radius: 60px;
@@ -305,4 +312,151 @@ footer nav ul {
 
 .footer-legal-notice{
 	margin-right: 107px;
+}
+
+.portfolio-paragraph{
+	position: relative;
+	left: 65%;
+	top: 25px	
+}
+
+.logout{
+	display: none;
+}
+
+.header-edit-mod{
+	color: #ffffff;
+	background-color: black;
+	display: flex;
+	width: 100%;
+	height: 59px;
+	justify-content: center;
+	align-items: center;
+}
+
+.button-edit-mod{
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 19px;
+	text-align: center;
+	color: #FFFFFF;
+	background-color: black;
+	border: none;
+}
+
+.button-edit-publish{
+	width: 216px;
+	height: 38px;
+	border-radius: 60px;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 16px;
+	text-align: center;
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+.figure-paragraph{
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 16px;
+	margin-top: 10px;
+	margin-left: 60px;
+	color: #000000;
+
+}
+
+
+.figure-edit-button{
+	text-align: center;
+	background-color: #FFFFFF;
+	border: none;
+	
+}
+
+.article-paragraph{
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 16px;
+	margin-top: 10px;
+	margin-left: 20px;
+	color: #000000;
+	order: 1;
+}
+
+.article-edit-button{
+	text-align: center;
+	background-color: #FFFFFF;
+	border: none;
+}
+
+.portfolio-paragraph{
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 16px;
+	margin-top: 10px;
+	margin-left: 0px;
+	color: #000000;
+}
+
+.portfolio-edit-button{
+	text-align: center;
+	background-color: #FFFFFF;
+	border: none;
+	
+}
+
+.modal { 										/*     modal     */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8) ;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-wrapper{
+	width: 630px;
+	overflow: auto;
+	max-width: 100vh;
+	max-height: 100vh;
+	background-color: #FFFFFF;
+	padding: 105px;
+	display: flex;
+	justify-content: center;
+	
+
+}
+
+.tittle-modal{
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 26px;
+	line-height: 30px;
+	text-align: center;
+	color: #000000;
+}
+
+.gallery-edit{
+	width: 100%;
+	margin-top: 51px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+	
 }

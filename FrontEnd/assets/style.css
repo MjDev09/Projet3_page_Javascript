@@ -423,25 +423,36 @@ footer nav ul {
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.8) ;
-	display: none;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
 .modal-wrapper{
 	width: 630px;
+	height: 731px;
+	max-width: calc(100vw - 30px);
+	max-height: calc(100vh - 30px);
 	overflow: auto;
-	max-width: 100vh;
-	max-height: 100vh;
 	background-color: #FFFFFF;
-	padding: 105px;
+	padding-right: 105px;
+	padding-left: 105px;
+	padding-top: 60px;
+	padding-bottom: 0px;
+	box-sizing: border-box;
 	display: flex;
-	justify-content: center;
-	
-
+	flex-direction: column;
+	align-items: center;
+	position: relative;
 }
 
-.tittle-modal{
+.box-cross-icon{
+	position: absolute;
+	top: 32px;
+	right: 36px;
+}
+
+.title-modal{
 	font-family: 'Work Sans';
 	font-style: normal;
 	font-weight: 400;
@@ -453,10 +464,85 @@ footer nav ul {
 
 .gallery-edit{
 	width: 100%;
-	margin-top: 51px;
+	margin-top: 46px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
-	
+	grid-column-gap: 10px;
+	grid-row-gap: 7px;
+	box-sizing: border-box;
+	padding-bottom: 43px;
+	margin-bottom: 38px;
+	border-bottom: 1px solid #B3B3B3;
+}
+
+.modal-box-picture{
+	height: 130px;
+	position: relative;
+}
+
+.grid-picture{
+	width: 78px;
+	height: 104px;
+}
+
+.div-icon{
+	background-color: #000000;
+	position: absolute;
+	top:10px;
+	right: 10px;
+	width: 17px;
+	height: 17px;
+	display: flex;
+	justify-content: center;
+	align-items: end;
+}
+
+.icon-cross{
+	position: absolute;
+	color: #FFFFFF;
+	width: 9px;
+	height: 9px;	
+}
+
+.button-add-picture{
+	font-family: 'Syne';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 17px;
+	text-align: center;
+	color: #FFFFFF;
+	background: #1D6154;
+	box-sizing: border-box;
+	width: 237px;
+	height: 36px;
+	border-radius: 60px;
+	padding-left: 49px;
+	padding-right: 49px;
+	padding-top: 10px;
+	padding-bottom: 9px;
+	border: none;
+	margin-bottom: 20px;
+}
+
+.delete-gallery{	
+	font-family: 'Syne';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
+	text-align: center;
+	color: #D65353;
+	padding-left: 40px;
+	padding-right: 40px;
+	border: none;
+}
+
+.tittle-edit{	
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 14px;
+	color: #000000;
 }

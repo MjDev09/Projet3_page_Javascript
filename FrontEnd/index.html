@@ -106,12 +106,13 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
-	<aside id="fenetre-modal" class="modal" role="dialog" aria-labelledby="tittlemodal">
+	<aside id="fenetre-modal" class="modal" role="dialog" aria-labelledby="tittlemodal" style="display: none;">
 		<div class="modal-wrapper">
-			<h2 id="tittlemodal">Galerie Photo</h2>
+			<div class="box-cross-icon"><i class="fa-solid fa-xmark" class="cross-icon"></i></div>
+			<h2 id="tittlemodal" class="title-modal">Galerie Photo</h2>
 			<div class="gallery-edit"></div>
-			<button>Ajouter une photo</button>
-			<button>Supprimer la galerie</button>
+			<button class="button-add-picture">Ajouter une photo</button>
+			<button class="delete-gallery">Supprimer la galerie</button>
 		</div>
 	</aside>
 	<aside>

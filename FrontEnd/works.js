@@ -1,15 +1,16 @@
 import { createEditButton } from "./indexEdit.js";
-let token = window.localStorage.getItem('token');
-if (token != null) {
-    createEditButton();
-}
-
+import { modaleGenerateWorks, editGaleriePhoto } from "./modal.js"
 const recoverWorks = await fetch("http://localhost:5678/api/works");
 const works = await recoverWorks.json();
 const setWorks = new Set(works);
-                
 const worksOne = [...setWorks];
 
+let token = window.localStorage.getItem('token');
+if (token != null) {
+    createEditButton();
+    console.log(worksOne);
+    editGaleriePhoto(worksOne); 
+}               
 
 const recoverButtons = await fetch("http://localhost:5678/api/categories");
 const buttons = await recoverButtons.json();
@@ -59,6 +60,10 @@ generateWorks(worksOne);
 
 
 
+
+
+
+
 /**  boutons  */
 const buttonAll = document.querySelector(".btn-all");
 buttonAll.addEventListener("click", function () {
@@ -94,7 +99,3 @@ buttonHotel.addEventListener("click", function () {
     document.querySelector(".gallery").innerHTML = "";
     generateWorks(hotelWorks);
 });
-
-
-
-

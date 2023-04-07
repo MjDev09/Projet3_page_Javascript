@@ -450,6 +450,8 @@ footer nav ul {
 	position: absolute;
 	top: 32px;
 	right: 36px;
+	background-color: #FFFFFF;
+	border: none;
 }
 
 .title-modal{
@@ -485,7 +487,7 @@ footer nav ul {
 	height: 104px;
 }
 
-.div-icon{
+.button-delete-works{
 	background-color: #000000;
 	position: absolute;
 	top:10px;

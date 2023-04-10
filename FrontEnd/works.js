@@ -44,6 +44,7 @@ function generateWorks(works){
         const work = works[i];
         const divGallery = document.querySelector(".gallery");
         const workElement = document.createElement("figure");
+        workElement.id = work.id;
         const workImage = document.createElement("img");
         workImage.src = work.imageUrl;
         workImage.alt = work.title;

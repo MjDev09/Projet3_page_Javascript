@@ -394,7 +394,7 @@ const sendDataForm = async function (e) {
             const arrayToken = JSON.parse(getToken);
             const stringToken = arrayToken.toString();
             const bearer = 'Bearer ' + stringToken;
-            console.log(bearer);
+            /*console.log(bearer);
             const option ={
                 method: 'POST',
                 headers: {
@@ -406,6 +406,12 @@ const sendDataForm = async function (e) {
             }
             fetch ('http://localhost:5678/api/works', option)
                 .then(response => response.statut)
-                .catch(error => console.error(error));
+                .catch(error => console.error(error));*/
+            const request = new XMLHttpRequest();
+            request.open("POST", "http://localhost:5678/api/works");
+            request.setRequestHeader("Authorization", bearer);
+            request.setRequestHeader("Accept", "application/json");
+            request.setRequestHeader("Content-Type", "multipart/form-data");
+            request.send(dataSend);
         }         
 }

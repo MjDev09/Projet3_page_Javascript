@@ -1,15 +1,19 @@
 import { createEditButton } from "./indexEdit.js";
-import { modaleGenerateWorks, editGaleriePhoto, modal, openModal, closeModal, stopPropagation, removeElementSelector, deleteWorks } from "./modal.js"
+import { modaleGenerateWorks, editGaleriePhoto, modal, openModal, closeModal, stopPropagation, removeElementSelector, deleteWorks, modalAdPictureGenerate, createForm } from "./modal.js"
 const recoverWorks = await fetch("http://localhost:5678/api/works");
 const works = await recoverWorks.json();
 const setWorks = new Set(works);
 const worksOne = [...setWorks];
 
 let token = window.localStorage.getItem('token');
+
 if (token != null) {
     createEditButton();
     console.log(worksOne);
     editGaleriePhoto(worksOne); 
+    const essai = JSON.parse(token);
+    console.log(essai);
+    console.log(essai.toString());
 }               
 
 const recoverButtons = await fetch("http://localhost:5678/api/categories");

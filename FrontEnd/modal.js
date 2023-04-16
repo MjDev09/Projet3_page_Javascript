@@ -328,12 +328,13 @@ const returnGalleryEdit = function (e){
    
     
 }
-
+let imageFile = null
 const updateImageDisplay = function (){
     const divTarget = document.querySelector(".div-add-picture");
-    const imageFile = document.querySelector(".modal2-input-add-picture");
-    let curFile = imageFile.files ;
+    const imageFileSelector = document.querySelector(".modal2-input-add-picture");
+    let curFile = imageFileSelector.files ;
     console.log(curFile);
+    console.log(curFile[0]);
     if (curFile.length === 1){
         if (validFileType(curFile[0])){
             document.querySelector(".modal2-input-add-picture").removeEventListener("change", updateImageDisplay);
@@ -343,11 +344,14 @@ const updateImageDisplay = function (){
             const imageInsight = document.createElement("img");
             imageInsight.src = window.URL.createObjectURL(curFile[0]);
             imageInsight.classList.add("image-insight-add");
+            console.log(curFile[0]);
             divTarget.appendChild(paragraphImage);
             paragraphImage.appendChild(imageInsight);
+            imageFile = curFile[0];
         }
         else {
             alert("le fichier n'est pas de type Jpg ou png")
+            imageFile = null;
         }
     }
 }   
@@ -375,43 +379,55 @@ const sendDataForm = async function (e) {
         ajout au dom l'image si promise rempli
         */
     e.preventDefault();
-    const imageData = document.querySelector(".image-insight-add").src;
+    /*const imageData = document.querySelector(".image-insight-add").src;*/
+    console.log(imageFile);
+    
+    const imageData = imageFile;
     const titleData = document.querySelector(".modal-form-input").value;
     const categoryData = document.querySelector(".form-select").value;
-    console.log(imageData);
-    console.log(categoryData);
-    console.log(titleData);
+    
     if ( categoryData === ""){
         alert("Merci de choisir une catégorie")
     }
         else {
             const dataSend = new FormData();
-            dataSend.append("image", imageData);
-            dataSend.append("title", titleData);
-            dataSend.append("category", categoryData);
+            console.log(imageData)
+            dataSend.append('title', titleData);
+            dataSend.append('category', categoryData);
+            dataSend.append('image', imageData);
             console.log(dataSend);
+            console.log(dataSend.get('title'));
+            console.log(dataSend.get('category'));
+            console.log(dataSend.get('image'));
             const getToken = window.localStorage.getItem("token")
             const arrayToken = JSON.parse(getToken);
             const stringToken = arrayToken.toString();
-            const bearer = 'Bearer ' + stringToken;
-            /*console.log(bearer);
+            const bearer = 'Bearer '+ stringToken;
+            console.log(bearer);
+            const headers = new Headers({
+                /*'accept': 'application/json',*/
+                /*'content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',*/
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': bearer
+            })
             const option ={
                 method: 'POST',
-                headers: {
-                    'accept': 'application/json',
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': bearer
-                },
+                headers: headers,
                 body: dataSend
             }
             fetch ('http://localhost:5678/api/works', option)
-                .then(response => response.statut)
-                .catch(error => console.error(error));*/
-            const request = new XMLHttpRequest();
+                .then(response => response.status)
+                .catch(error => console.error(error));
+            /*const request = new XMLHttpRequest();
             request.open("POST", "http://localhost:5678/api/works");
             request.setRequestHeader("Authorization", bearer);
             request.setRequestHeader("Accept", "application/json");
             request.setRequestHeader("Content-Type", "multipart/form-data");
-            request.send(dataSend);
+            request.send(dataSend);*/
         }         
-}
+};
+
+/*  Error: Unexpected end of multipart data   */
+/* Error: Multipart: Boundary not found 
+tp://localhost:5678/api/works 500 (Internal Server Error)
+sendDa*/

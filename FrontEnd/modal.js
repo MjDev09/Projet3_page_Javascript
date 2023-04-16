@@ -96,7 +96,9 @@ export const openModal = async function (e) {
     target.removeAttribute("aria-hidden");
     target.setAttribute("aria-modal", "true");
     modal = target;
-    
+    document.querySelectorAll('.button-delete-works').forEach(div => {
+        div.addEventListener("click", deleteWorks) 
+    })
     modal.addEventListener("click", closeModal);
     modal.querySelector(".box-cross-icon").addEventListener("click", closeModal);
     modal.querySelector(".modal-wrapper").addEventListener("click", stopPropagation);
@@ -135,10 +137,10 @@ export const stopPropagation = function (e) {
 
 /*     suppression  travaux   */
 
-export const removeElementSelector = function() {
-    document.querySelectorAll('.button-delete-works').forEach(button => {
-    button.addEventListener("click", deleteWorks) 
-})}
+/*export const removeElementSelector = function() {
+    document.querySelectorAll('.button-delete-works').forEach(div => {
+    div.addEventListener("click", deleteWorks) 
+})}*/
 
 export const deleteWorks = function (e) {
     e.preventDefault();
@@ -152,7 +154,7 @@ export const deleteWorks = function (e) {
     
     target.parentNode.parentNode.remove();
     idTarget.remove();
-    /*
+    
     const getToken = window.localStorage.getItem("token")
     const arrayToken = JSON.parse(getToken);
     const stringToken = arrayToken.toString();
@@ -170,13 +172,13 @@ export const deleteWorks = function (e) {
                 alert(res.statut)
                 target.parentNode.parentNode.remove();
                 idTarget.remove();
-            }
+            }})
         .catch(error =>{
             alert(error)
         })
-    })
-    */
-}    
+    }
+    
+   
 
 /* création formulaire ajout projet  */
 
@@ -332,43 +334,70 @@ let imageFile = null
 const updateImageDisplay = function (){
     const divTarget = document.querySelector(".div-add-picture");
     const imageFileSelector = document.querySelector(".modal2-input-add-picture");
-    let curFile = imageFileSelector.files ;
-    console.log(curFile);
-    console.log(curFile[0]);
-    if (curFile.length === 1){
-        if (validFileType(curFile[0])){
+    let curFile = imageFileSelector.files[0] ;
+    if (imageFileSelector.length !== 0){
+        if (validFileType(curFile)){
             document.querySelector(".modal2-input-add-picture").removeEventListener("change", updateImageDisplay);
             divTarget.innerHTML = "";
             const paragraphImage = document.createElement("p");
             paragraphImage.classList.add("paragraph-image-insight");
             const imageInsight = document.createElement("img");
-            imageInsight.src = window.URL.createObjectURL(curFile[0]);
+            imageInsight.src = window.URL.createObjectURL(curFile);
             imageInsight.classList.add("image-insight-add");
-            console.log(curFile[0]);
+            console.log(curFile);
             divTarget.appendChild(paragraphImage);
             paragraphImage.appendChild(imageInsight);
-            imageFile = curFile[0];
+            imageFile = curFile;
         }
         else {
             alert("le fichier n'est pas de type Jpg ou png")
             imageFile = null;
+            console.log(curFile.type)
         }
     }
 }   
 
-const filesAccept = ['image/jpeg', 'image.jpg', 'image/png'];
+const filesAccept = [
+    'image/jpg', 
+    'image/jpeg',
+    'image/png'
+]
 
+const filePng = 'image/png';
+const fileJpg = 'image/jpg';
+const fileJpeg = 'image/jpeg';
 const validFileType = function(file) {
-    for (let fileAccept of filesAccept){
-        if (file.type === fileAccept){
-            return true;
+    if(file.type === filePng || file.type === fileJpg || file.type === fileJpeg){
+        return true;
+    }
+     return false;
+}
 
+/*
+const validFileType = function(file) {
+    for (let i = 0; i < filesAccept.length; i++) {
+        if (file.type === filesAccept[i]){
+           
+            return true;       
         }
+        
         else {
+            
             return false;
         }
     }
-}
+}*//*
+const validFileType = function(file) {
+    for (let i in filesAccept) {
+        if (file.type === filesAccept[i]){
+            console.log(filesAccept[i]);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+} */ 
 
 const sendDataForm = async function (e) {
     /*  -recuperer donnes img titre categorie 
@@ -407,7 +436,7 @@ const sendDataForm = async function (e) {
             const headers = new Headers({
                 /*'accept': 'application/json',*/
                 /*'content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',*/
-                'Content-Type': 'application/x-www-form-urlencoded',
+                /*'Content-Type': 'application/x-www-form-urlencoded',*/
                 'Authorization': bearer
             })
             const option ={
@@ -416,7 +445,10 @@ const sendDataForm = async function (e) {
                 body: dataSend
             }
             fetch ('http://localhost:5678/api/works', option)
-                .then(response => response.status)
+                .then(function(response){
+                    alert("work ajouté");
+                    return response.status;
+                })
                 .catch(error => console.error(error));
             /*const request = new XMLHttpRequest();
             request.open("POST", "http://localhost:5678/api/works");

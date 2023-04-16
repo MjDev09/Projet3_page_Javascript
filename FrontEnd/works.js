@@ -1,5 +1,5 @@
 import { createEditButton } from "./indexEdit.js";
-import { modaleGenerateWorks, editGaleriePhoto, modal, openModal, closeModal, stopPropagation, removeElementSelector, deleteWorks, modalAdPictureGenerate, createForm } from "./modal.js"
+import { modaleGenerateWorks, editGaleriePhoto, modal, openModal, closeModal, stopPropagation, deleteWorks, modalAdPictureGenerate, createForm } from "./modal.js"
 const recoverWorks = await fetch("http://localhost:5678/api/works");
 const works = await recoverWorks.json();
 const setWorks = new Set(works);

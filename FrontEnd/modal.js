@@ -113,7 +113,9 @@ export const closeModal = function (e){
     modal.removeAttribute("aria-modal");
     modal.removeEventListener("click", closeModal);
     modal.querySelector(".box-cross-icon").removeEventListener("click", closeModal)
-    
+    document.querySelectorAll('.button-delete-works').forEach(div => {
+        div.removeEventListener("click", deleteWorks) 
+    })
     modal.querySelector(".modal-wrapper").removeEventListener("click", stopPropagation);
     modal.querySelector(".button-add-picture").removeEventListener('click', createForm);
     
@@ -123,9 +125,6 @@ export const closeModal = function (e){
     }
     
     document.querySelector(".modal").innerHTML = "";
-    /*modal.querySelector(".modal-wrapper").remove();*/
-    /*modal.querySelectorAll("figure").forEach(figure => {
-        figure.remove();    });*/
     modal = null;
     
 }
@@ -137,10 +136,6 @@ export const stopPropagation = function (e) {
 
 /*     suppression  travaux   */
 
-/*export const removeElementSelector = function() {
-    document.querySelectorAll('.button-delete-works').forEach(div => {
-    div.addEventListener("click", deleteWorks) 
-})}*/
 
 export const deleteWorks = function (e) {
     e.preventDefault();
@@ -169,7 +164,6 @@ export const deleteWorks = function (e) {
         .then(res => {
             if (res.ok){
                 alert("travaux supprimés")
-                alert(res.statut)
                 target.parentNode.parentNode.remove();
                 idTarget.remove();
             }})
@@ -181,12 +175,24 @@ export const deleteWorks = function (e) {
    
 
 /* création formulaire ajout projet  */
-
+export function generateOptionSelect(categories){
+    const formParagraphCategorySelectoption0 = document.createElement("option");
+    formParagraphCategorySelectoption0.value = "";
+    const formParagraphCategorySelect = document.querySelector(".form-select");
+    formParagraphCategorySelect.appendChild(formParagraphCategorySelectoption0);
+    for (let i in categories){
+        const category = categories[i];
+        const formParagraphCategorySelectoption = document.createElement("option");
+        formParagraphCategorySelectoption.value = category.id;
+        formParagraphCategorySelectoption.innerText = category.name;
+        formParagraphCategorySelect.appendChild(formParagraphCategorySelectoption);
+    }
+}
 
     
 
 
-export function modalAdPictureGenerate () {
+export async function modalAdPictureGenerate () {
     const boxModal = document.querySelector(".modal");
     const divModal2 = document.createElement("div");
     divModal2.classList.add("modal-add-picture");
@@ -257,23 +263,6 @@ export function modalAdPictureGenerate () {
     formParagraphCategorySelect.id = "category";
     formParagraphCategorySelect.required = "required";
     formParagraphCategorySelect.classList.add("form-select");
-    const formParagraphCategorySelectoption0 = document.createElement("option");
-    formParagraphCategorySelectoption0.value = "";
-    const formParagraphCategorySelectoption1 = document.createElement("option");
-    formParagraphCategorySelectoption1.value = "Objets";
-    formParagraphCategorySelectoption1.innerText = "Objets";
-    const formParagraphCategorySelectoption2 = document.createElement("option");
-    formParagraphCategorySelectoption2.value = "Appartements";
-    formParagraphCategorySelectoption2.innerText = "Appartements";
-    const formParagraphCategorySelectoption3 = document.createElement("option");
-    formParagraphCategorySelectoption3.value = "Hotels & restaurants";
-    formParagraphCategorySelectoption3.innerText = "Hotels & restaurants";
-    const formButtonValid = document.createElement("button");
-    formButtonValid.classList.add("modal2-form-button-valid");
-    formButtonValid.innerText = "Valider";
-
-
-
 
     boxModal.appendChild(divModal2);
     divModal2.appendChild(buttonReturn);
@@ -294,11 +283,14 @@ export function modalAdPictureGenerate () {
     modal2Form.appendChild(formParagraphCategory);
     formParagraphCategory.appendChild(formParagraphCategoryLabel);
     formParagraphCategory.appendChild(formParagraphCategorySelect);
-    formParagraphCategorySelect.appendChild(formParagraphCategorySelectoption0);
-    formParagraphCategorySelect.appendChild(formParagraphCategorySelectoption1);
-    formParagraphCategorySelect.appendChild(formParagraphCategorySelectoption2);
-    formParagraphCategorySelect.appendChild(formParagraphCategorySelectoption3);
+    const formButtonValid = document.createElement("button");
+    formButtonValid.classList.add("modal2-form-button-valid");
+    formButtonValid.innerText = "Valider";
     modal2Form.appendChild(formButtonValid);
+    
+    const recoverCategory = await fetch("http://localhost:5678/api/categories");
+    const dataCategory = await recoverCategory.json();
+    generateOptionSelect(dataCategory);
 }
 
 export const createForm = function (e) {
@@ -316,7 +308,7 @@ export const createForm = function (e) {
     authorization: Bearer {{mon_token}} */
 }
 
-const returnGalleryEdit = function (e){
+export const returnGalleryEdit = function (e){
     e.preventDefault; 
     document.querySelector(".modal-wrapper").style.display = "flex";
     document.querySelector(".box-cross-icon2").removeEventListener("click", closeModal);
@@ -330,8 +322,8 @@ const returnGalleryEdit = function (e){
    
     
 }
-let imageFile = null
-const updateImageDisplay = function (){
+export let imageFile = null
+export const updateImageDisplay = function (){
     const divTarget = document.querySelector(".div-add-picture");
     const imageFileSelector = document.querySelector(".modal2-input-add-picture");
     let curFile = imageFileSelector.files[0] ;
@@ -345,6 +337,7 @@ const updateImageDisplay = function (){
             imageInsight.src = window.URL.createObjectURL(curFile);
             imageInsight.classList.add("image-insight-add");
             console.log(curFile);
+            console.log(curFile.type)
             divTarget.appendChild(paragraphImage);
             paragraphImage.appendChild(imageInsight);
             imageFile = curFile;
@@ -357,12 +350,12 @@ const updateImageDisplay = function (){
     }
 }   
 
-const filesAccept = [
+export const filesAccept = [
     'image/jpg', 
     'image/jpeg',
     'image/png'
 ]
-
+/*
 const filePng = 'image/png';
 const fileJpg = 'image/jpg';
 const fileJpeg = 'image/jpeg';
@@ -372,51 +365,41 @@ const validFileType = function(file) {
     }
      return false;
 }
-
+*/
 /*
 const validFileType = function(file) {
     for (let i = 0; i < filesAccept.length; i++) {
         if (file.type === filesAccept[i]){
-           
+  
             return true;       
         }
-        
-        else {
-            
-            return false;
-        }
     }
-}*//*
-const validFileType = function(file) {
+
+    return false;  
+}
+*/
+export const validFileType = function(file) {
     for (let i in filesAccept) {
         if (file.type === filesAccept[i]){
             console.log(filesAccept[i]);
             return true;
         }
-        else{
-            return false;
-        }
     }
-} */ 
+    return false;   
+} 
 
-const sendDataForm = async function (e) {
-    /*  -recuperer donnes img titre categorie 
-        tester si donnes titre/cat/img
-        -tester donnes != value null
-        -mettre donnes ds formdata
-        initialiser requete
+export const sendDataForm = async function (e) {
+    /*  
         ajout au dom l'image si promise rempli
         */
     e.preventDefault();
-    /*const imageData = document.querySelector(".image-insight-add").src;*/
-    console.log(imageFile);
-    
+
     const imageData = imageFile;
     const titleData = document.querySelector(".modal-form-input").value;
     const categoryData = document.querySelector(".form-select").value;
     
     if ( categoryData === ""){
-        alert("Merci de choisir une catégorie")
+        alert("Merci de bien vouloir choisir une catégorie s'il vous plaît")
     }
         else {
             const dataSend = new FormData();
@@ -434,9 +417,7 @@ const sendDataForm = async function (e) {
             const bearer = 'Bearer '+ stringToken;
             console.log(bearer);
             const headers = new Headers({
-                /*'accept': 'application/json',*/
-                /*'content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',*/
-                /*'Content-Type': 'application/x-www-form-urlencoded',*/
+                
                 'Authorization': bearer
             })
             const option ={
@@ -446,20 +427,20 @@ const sendDataForm = async function (e) {
             }
             fetch ('http://localhost:5678/api/works', option)
                 .then(function(response){
+                    console.log(response.status);
                     alert("work ajouté");
-                    return response.status;
+                    /* ajout au dom  */
+                    
                 })
                 .catch(error => console.error(error));
-            /*const request = new XMLHttpRequest();
-            request.open("POST", "http://localhost:5678/api/works");
-            request.setRequestHeader("Authorization", bearer);
-            request.setRequestHeader("Accept", "application/json");
-            request.setRequestHeader("Content-Type", "multipart/form-data");
-            request.send(dataSend);*/
+            
         }         
 };
 
-/*  Error: Unexpected end of multipart data   */
-/* Error: Multipart: Boundary not found 
-tp://localhost:5678/api/works 500 (Internal Server Error)
-sendDa*/
+
+/*  const file = fileInput.files[0];
+  const formData = new FormData();
+  formData.append('image', new Blob([file], { type: file.type }), file.name);
+  formData.append('title', titleInput.value);
+  formData.append('category', categoryInput.value);  */
+/* https://developer.mozilla.org/en-US/docs/Web/API/Blob  */

@@ -5,21 +5,17 @@ const works = await recoverWorks.json();
 const setWorks = new Set(works);
 const worksOne = [...setWorks];
 
-let token = window.localStorage.getItem('token');
-
-if (token != null) {
-    createEditButton();
-    console.log(worksOne);
-    editGaleriePhoto(worksOne); 
-    const essai = JSON.parse(token);
-    console.log(essai);
-    console.log(essai.toString());
-}               
+               
 
 const recoverButtons = await fetch("http://localhost:5678/api/categories");
 const buttons = await recoverButtons.json();
-console.log(buttons);
+/*console.log(buttons);*/
 function generateButtons(Buttons){
+        const divSelector = document.querySelector("#portfolio");
+        const divButtonBox = document.createElement("div");
+        divButtonBox.classList.add("button-box");
+        divSelector.appendChild(divButtonBox);
+        
         const divButton = document.querySelector(".button-box");
         const buttonAll = document.createElement("button");
         buttonAll.innerText = "Tous";
@@ -36,11 +32,18 @@ function generateButtons(Buttons){
         buttonElement.classList.add(button.name.substring(0, 6));
         divButtons.appendChild(buttonElement);
     }
-    
-    
 }
 
+let token = window.localStorage.getItem('token');
 generateButtons(buttons);
+if (token != null) {
+    createEditButton();
+    editGaleriePhoto(worksOne); 
+    /*const essai = JSON.parse(token);
+    console.log(essai);
+    console.log(essai.toString());*/
+}
+
 
 function generateWorks(works){
     for (let i in works){

@@ -6,7 +6,8 @@ export function createEditButton (){
     divBody.appendChild(divEdit);
     
     const divHeaderEditBox = document.querySelector(".header-edit-box");*/ /* création paragraphe 1 de la div aussus du header*/
-    const divEditMod = document.querySelector(".header-edit-mod")
+    const divEditMod = document.querySelector(".header-edit-mod");
+    divEditMod.style.display = "flex";
     const divParagraph = document.createElement("p");
     divParagraph.classList.add("header-paragraph");
     /*divHeaderEditBox*/divEditMod.appendChild(divParagraph);
@@ -80,7 +81,9 @@ export function createEditButton (){
     portfolioEditButton.classList.add("portfolio-edit-button");
     portfolioParagraphEdit.appendChild(portfolioEditButton);
 
+
     document.querySelector(".button-box").style.display = "none";
+    
     document.querySelector(".login").style.display = "none";
     document.querySelector(".logout").style.display = "list-item";
 } 

@@ -137,9 +137,9 @@ export const stopPropagation = function (e) {
 /*     suppression  travaux   */
 
 
-export const deleteWorks = function (e) {
-    e.preventDefault();
-    const target = e.target;
+export const deleteWorks = function (event) {
+    event.preventDefault();
+    const target = event.target;
     const idTargetModal = target.dataset.id
     const idTarget = document.getElementById(idTargetModal);
     console.log(target);
@@ -163,7 +163,7 @@ export const deleteWorks = function (e) {
     fetch(`http://localhost:5678/api/works/${idTargetModal}`, options)
         .then(res => {
             if (res.ok){
-                alert("travaux supprimés")
+                alert("travaux supprimés");
                 target.parentNode.parentNode.remove();
                 idTarget.remove();
             }})
@@ -284,6 +284,7 @@ export async function modalAdPictureGenerate () {
     formParagraphCategory.appendChild(formParagraphCategoryLabel);
     formParagraphCategory.appendChild(formParagraphCategorySelect);
     const formButtonValid = document.createElement("button");
+    formButtonValid.type = "button";
     formButtonValid.classList.add("modal2-form-button-valid");
     formButtonValid.innerText = "Valider";
     modal2Form.appendChild(formButtonValid);
@@ -302,10 +303,6 @@ export const createForm = function (e) {
     document.querySelector(".box-return-icon").addEventListener("click", returnGalleryEdit);
     document.querySelector(".modal2-input-add-picture").addEventListener("change", updateImageDisplay);
     document.querySelector(".modal2-form-button-valid").addEventListener("click", sendDataForm);
-    /* hidden alise modal1 et null pour modal2 
-    ajouter hidden à moddal wrapper et null lors de l'ouverture de la modale
-    
-    authorization: Bearer {{mon_token}} */
 }
 
 export const returnGalleryEdit = function (e){
@@ -316,7 +313,7 @@ export const returnGalleryEdit = function (e){
     if (document.querySelector(".modal2-input-add-picture") != null){
     document.querySelector(".modal2-input-add-picture").removeEventListener("change", updateImageDisplay);
     }
-    document.querySelector(".modal2-form-button-valid").removeEventListener("submit", sendDataForm);
+    document.querySelector(".modal2-form-button-valid").removeEventListener("click", sendDataForm);
     document.querySelector(".modal-add-picture").innerHTML = "";
     document.querySelector(".modal-add-picture").remove();
    
@@ -403,7 +400,7 @@ export const sendDataForm = async function (e) {
     }
         else {
             const dataSend = new FormData();
-            console.log(imageData)
+            console.log(imageData);
             dataSend.append('title', titleData);
             dataSend.append('category', categoryData);
             dataSend.append('image', imageData);
@@ -426,11 +423,44 @@ export const sendDataForm = async function (e) {
                 body: dataSend
             }
             fetch ('http://localhost:5678/api/works', option)
-                .then(function(response){
-                    console.log(response.status);
-                    alert("work ajouté");
-                    /* ajout au dom  */
+                .then(function(){
                     
+                    
+                    /* ajout au dom  */
+                    const selectorDivGallery = document.querySelector(".gallery");
+                    const workElement = document.createElement("figure");
+                    const workImage = document.createElement("img");
+                    workImage.src = imageData;
+                    workImage.alt = titleData;
+                    const workTitle = document.createElement("figcaption");
+                    workTitle.innerText = titleData;
+                    selectorDivGallery.appendChild(workElement);
+                    workElement.appendChild(workImage);
+                    workElement.appendChild(workTitle);
+
+                    const selectorDivGalleryModal = document.querySelector(".gallery-edit")
+                    const workElementModal = document.createElement("figure");
+                    workElement.classList.add("modal-box-picture")
+                    const workImageModal = document.createElement("img");
+                    workImage.src = imageData;
+                    workImage.alt = titleData;
+                    workImage.classList.add("grid-picture");
+                    const buttonIcon = document.createElement("div");
+                    buttonIcon.classList.add("button-delete-works");
+                    const iconCross = document.createElement("i");
+                    iconCross.classList.add("fa-solid");
+                    iconCross.classList.add("fa-trash-can");
+                    iconCross.classList.add("fa-xs");
+                    iconCross.classList.add("icon-cross");
+                    const tittleEdit = document.createElement("figcaption");
+                    tittleEdit.innerText = "éditer";
+                    tittleEdit.classList.add("tittle-edit");
+                    selectorDivGalleryModal.appendChild(workElementModal);
+                    workElementModal.appendChild(workImageModal);
+                    workElementModal.appendChild(buttonIcon);
+                    buttonIcon.appendChild(iconCross);
+                    workElementModal.appendChild(tittleEdit);
+                    returnGalleryEdit;
                 })
                 .catch(error => console.error(error));
             

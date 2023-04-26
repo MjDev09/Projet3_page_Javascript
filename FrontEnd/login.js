@@ -22,7 +22,7 @@ function testUser() {
                 arrayResponse.push(objectResponse);
                 const token = arrayResponse.map (obj => obj.token);
                 window.localStorage.setItem("token", JSON.stringify(token));
-                location.replace('http://127.0.0.1:5500/FrontEnd/index.html');}
+                location.replace('index.html');}
 
             else {
                 alert("Erreur dans l’identifiant ou le mot de passe");

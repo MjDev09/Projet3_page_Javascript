@@ -105,9 +105,9 @@ export const openModal = async function (e) {
     modal.querySelector(".button-add-picture").addEventListener("click", createForm);
 }
 
-export const closeModal = function (e){
+export const closeModal = function (event){
     if (modal === null) return;
-    e.preventDefault();
+    event.preventDefault();
     modal.style.display = "none";
     modal.setAttribute("aria-hidden", "true");
     modal.removeAttribute("aria-modal");
@@ -147,9 +147,6 @@ export const deleteWorks = function (event) {
     console.log(idTargetModal);
     console.log(idTarget);
     
-    target.parentNode.parentNode.remove();
-    idTarget.remove();
-    
     const getToken = window.localStorage.getItem("token")
     const arrayToken = JSON.parse(getToken);
     const stringToken = arrayToken.toString();
@@ -163,7 +160,7 @@ export const deleteWorks = function (event) {
     fetch(`http://localhost:5678/api/works/${idTargetModal}`, options)
         .then(res => {
             if (res.ok){
-                alert("travaux supprimés");
+                /*alert("travaux supprimés");*/
                 target.parentNode.parentNode.remove();
                 idTarget.remove();
             }})
@@ -251,7 +248,7 @@ export async function modalAdPictureGenerate () {
     formParagraphTitleInput.name = "title";
     formParagraphTitleInput.id = "title";
     formParagraphTitleInput.required = "required";
-    formParagraphTitleInput.classList.add("modal-form-input");
+    formParagraphTitleInput.classList.add("modal-form-input", "elementForm");
     const formParagraphCategory = document.createElement("p");
     formParagraphCategory.classList.add("form-paragraph-category");
     const formParagraphCategoryLabel = document.createElement("label");
@@ -262,7 +259,7 @@ export async function modalAdPictureGenerate () {
     formParagraphCategorySelect.name = "category";
     formParagraphCategorySelect.id = "category";
     formParagraphCategorySelect.required = "required";
-    formParagraphCategorySelect.classList.add("form-select");
+    formParagraphCategorySelect.classList.add("form-select", "elementForm");
 
     boxModal.appendChild(divModal2);
     divModal2.appendChild(buttonReturn);
@@ -292,6 +289,7 @@ export async function modalAdPictureGenerate () {
     const recoverCategory = await fetch("http://localhost:5678/api/categories");
     const dataCategory = await recoverCategory.json();
     generateOptionSelect(dataCategory);
+    
 }
 
 export const createForm = function (e) {
@@ -303,6 +301,13 @@ export const createForm = function (e) {
     document.querySelector(".box-return-icon").addEventListener("click", returnGalleryEdit);
     document.querySelector(".modal2-input-add-picture").addEventListener("change", updateImageDisplay);
     document.querySelector(".modal2-form-button-valid").addEventListener("click", sendDataForm);
+    document.querySelectorAll('.elementForm').forEach( element => {
+        element.addEventListener('change', () => {
+            if (document.querySelector(".image-insight-add").value !== '' && document.querySelector(".modal-form-input").value !== '' && document.querySelector(".form-select").value !== ''){
+                document.querySelector(".modal2-form-button-valid").style.background = "#1D6154"
+            }
+          });
+    })
 }
 
 export const returnGalleryEdit = function (e){
@@ -329,7 +334,7 @@ export const updateImageDisplay = function (){
             document.querySelector(".modal2-input-add-picture").removeEventListener("change", updateImageDisplay);
             divTarget.innerHTML = "";
             const paragraphImage = document.createElement("p");
-            paragraphImage.classList.add("paragraph-image-insight");
+            paragraphImage.classList.add("paragraph-image-insight", "elementForm");
             const imageInsight = document.createElement("img");
             imageInsight.src = window.URL.createObjectURL(curFile);
             imageInsight.classList.add("image-insight-add");
@@ -398,6 +403,9 @@ export const sendDataForm = async function (e) {
     if ( categoryData === ""){
         alert("Merci de bien vouloir choisir une catégorie s'il vous plaît")
     }
+        else if ( imageData === '' || titleData === ''){
+            alert("Merci de bien vouloir remplir entièrement le formulaire")
+        }
         else {
             const dataSend = new FormData();
             console.log(imageData);
@@ -430,7 +438,7 @@ export const sendDataForm = async function (e) {
                     const selectorDivGallery = document.querySelector(".gallery");
                     const workElement = document.createElement("figure");
                     const workImage = document.createElement("img");
-                    workImage.src = imageData;
+                    workImage.src = window.URL.createObjectURL(imageData);
                     workImage.alt = titleData;
                     const workTitle = document.createElement("figcaption");
                     workTitle.innerText = titleData;
@@ -440,11 +448,11 @@ export const sendDataForm = async function (e) {
 
                     const selectorDivGalleryModal = document.querySelector(".gallery-edit")
                     const workElementModal = document.createElement("figure");
-                    workElement.classList.add("modal-box-picture")
+                    workElementModal.classList.add("modal-box-picture")
                     const workImageModal = document.createElement("img");
-                    workImage.src = imageData;
-                    workImage.alt = titleData;
-                    workImage.classList.add("grid-picture");
+                    workImageModal.src = window.URL.createObjectURL(imageData);
+                    workImageModal.alt = titleData;
+                    workImageModal.classList.add("grid-picture");
                     const buttonIcon = document.createElement("div");
                     buttonIcon.classList.add("button-delete-works");
                     const iconCross = document.createElement("i");
@@ -460,7 +468,7 @@ export const sendDataForm = async function (e) {
                     workElementModal.appendChild(buttonIcon);
                     buttonIcon.appendChild(iconCross);
                     workElementModal.appendChild(tittleEdit);
-                    returnGalleryEdit;
+                    returnGalleryEdit(e);
                 })
                 .catch(error => console.error(error));
             

@@ -45,7 +45,7 @@ export function createEditButton (){
     figureParagraphEdit.appendChild(figureEditButton);
     
 
-    /**/
+    
     const articleEdit = document.querySelector("article");    /*  création bouton modifier à côté photo  */
     const articleParagraph = document.createElement("p");
     articleParagraph.classList.add("article-paragraph");

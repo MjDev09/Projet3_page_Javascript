@@ -1,5 +1,5 @@
- /* générateur balises modales   */
-
+ /* creation variable string constituant un mot servant de préfixe à l'id des travaux de la modale    */
+export const namePrefix = "id";
 
 
 /*    générateur travaux     */
@@ -46,7 +46,8 @@ export function modaleGenerateWorks(works){
 
         const divGalleryEdit = document.querySelector(".gallery-edit");
         const workElement = document.createElement("figure");
-        workElement.classList.add("modal-box-picture")
+        workElement.id = namePrefix + work.id;
+        workElement.classList.add("modal-box-picture");
         const workImage = document.createElement("img");
         workImage.src = work.imageUrl;
         workImage.alt = work.title;
@@ -58,7 +59,7 @@ export function modaleGenerateWorks(works){
         iconCross.classList.add("fa-trash-can");
         iconCross.classList.add("fa-xs");
         iconCross.classList.add("icon-cross");
-        iconCross.dataset.id = work.id;  /*  ou id */
+        iconCross.dataset.id = work.id;  
         const tittleEdit = document.createElement("figcaption");
         tittleEdit.innerText = "éditer";
         tittleEdit.classList.add("tittle-edit");
@@ -75,7 +76,7 @@ export function modaleGenerateWorks(works){
 
 /*  ouverture modale */
 export let modal = null;
-export async function editGaleriePhoto(){        /* insérer fonction dans la page javascript indexEdit à la création du bouton ?*/
+export async function editGaleriePhoto(){        
         const buttonModify = document.querySelector(".portfolio-edit-button");
         buttonModify.addEventListener("click", openModal)
     
@@ -90,7 +91,6 @@ export const openModal = async function (e) {
     
 
     modaleGenerateWorks(worksForModal);
-    console.log(worksForModal);
     const target = document.querySelector(e.target.getAttribute("href"));
     target.style.display = null;
     target.removeAttribute("aria-hidden");
@@ -140,12 +140,14 @@ export const stopPropagation = function (e) {
 export const deleteWorks = function (event) {
     event.preventDefault();
     const target = event.target;
-    const idTargetModal = target.dataset.id
-    const idTarget = document.getElementById(idTargetModal);
-    console.log(target);
-    console.log(target.parentNode.parentNode);  /*a changer en rajoutant une donnée sur la balise du gd parent figure pour l'identifier et la supprimer sans utiliser parentNode*/
+    const idTargetModal = target.dataset.id;
+    const idTargetWork = document.getElementById(idTargetModal);
+    const idTargetWorkModal = document.getElementById(namePrefix + idTargetModal);
+    /*console.log(target);
+    console.log(target.parentNode.parentNode);  
     console.log(idTargetModal);
-    console.log(idTarget);
+    console.log(idTargetWork);
+    console.log(idTargetWorkModal);*/
     
     const getToken = window.localStorage.getItem("token")
     const arrayToken = JSON.parse(getToken);
@@ -161,8 +163,9 @@ export const deleteWorks = function (event) {
         .then(res => {
             if (res.ok){
                 /*alert("travaux supprimés");*/
-                target.parentNode.parentNode.remove();
-                idTarget.remove();
+                /*target.parentNode.parentNode.remove();*/
+                idTargetWork.remove();
+                idTargetWorkModal.remove();
             }})
         .catch(error =>{
             alert(error)
@@ -338,8 +341,6 @@ export const updateImageDisplay = function (){
             const imageInsight = document.createElement("img");
             imageInsight.src = window.URL.createObjectURL(curFile);
             imageInsight.classList.add("image-insight-add");
-            console.log(curFile);
-            console.log(curFile.type)
             divTarget.appendChild(paragraphImage);
             paragraphImage.appendChild(imageInsight);
             imageFile = curFile;
@@ -347,7 +348,7 @@ export const updateImageDisplay = function (){
         else {
             alert("le fichier n'est pas de type Jpg ou png")
             imageFile = null;
-            console.log(curFile.type)
+            
         }
     }
 }   
@@ -383,7 +384,7 @@ const validFileType = function(file) {
 export const validFileType = function(file) {
     for (let i in filesAccept) {
         if (file.type === filesAccept[i]){
-            console.log(filesAccept[i]);
+            /*console.log(filesAccept[i]);*/
             return true;
         }
     }
@@ -391,9 +392,6 @@ export const validFileType = function(file) {
 } 
 
 export const sendDataForm = async function (e) {
-    /*  
-        ajout au dom l'image si promise rempli
-        */
     e.preventDefault();
 
     const imageData = imageFile;
@@ -412,15 +410,14 @@ export const sendDataForm = async function (e) {
             dataSend.append('title', titleData);
             dataSend.append('category', categoryData);
             dataSend.append('image', imageData);
-            console.log(dataSend);
+            /*console.log(dataSend);
             console.log(dataSend.get('title'));
             console.log(dataSend.get('category'));
-            console.log(dataSend.get('image'));
+            console.log(dataSend.get('image'));*/
             const getToken = window.localStorage.getItem("token")
             const arrayToken = JSON.parse(getToken);
             const stringToken = arrayToken.toString();
             const bearer = 'Bearer '+ stringToken;
-            console.log(bearer);
             const headers = new Headers({
                 
                 'Authorization': bearer
@@ -431,12 +428,14 @@ export const sendDataForm = async function (e) {
                 body: dataSend
             }
             fetch ('http://localhost:5678/api/works', option)
-                .then(function(){
-                    
+                .then(function(response){
+                    return response.json()})
+                .then(function(data){
                     
                     /* ajout au dom  */
                     const selectorDivGallery = document.querySelector(".gallery");
                     const workElement = document.createElement("figure");
+                    workElement.id = data.id;
                     const workImage = document.createElement("img");
                     workImage.src = window.URL.createObjectURL(imageData);
                     workImage.alt = titleData;
@@ -448,6 +447,7 @@ export const sendDataForm = async function (e) {
 
                     const selectorDivGalleryModal = document.querySelector(".gallery-edit")
                     const workElementModal = document.createElement("figure");
+                    workElementModal.id = namePrefix + data.id;
                     workElementModal.classList.add("modal-box-picture")
                     const workImageModal = document.createElement("img");
                     workImageModal.src = window.URL.createObjectURL(imageData);
@@ -460,6 +460,7 @@ export const sendDataForm = async function (e) {
                     iconCross.classList.add("fa-trash-can");
                     iconCross.classList.add("fa-xs");
                     iconCross.classList.add("icon-cross");
+                    iconCross.dataset.id = data.id;
                     const tittleEdit = document.createElement("figcaption");
                     tittleEdit.innerText = "éditer";
                     tittleEdit.classList.add("tittle-edit");
@@ -468,6 +469,9 @@ export const sendDataForm = async function (e) {
                     workElementModal.appendChild(buttonIcon);
                     buttonIcon.appendChild(iconCross);
                     workElementModal.appendChild(tittleEdit);
+                    const selectElement = document.querySelector("#" + namePrefix + data.id);
+                    const selectDivElement = selectElement.querySelector('div');
+                    selectDivElement.addEventListener("click", deleteWorks);
                     returnGalleryEdit(e);
                 })
                 .catch(error => console.error(error));
@@ -476,9 +480,3 @@ export const sendDataForm = async function (e) {
 };
 
 
-/*  const file = fileInput.files[0];
-  const formData = new FormData();
-  formData.append('image', new Blob([file], { type: file.type }), file.name);
-  formData.append('title', titleInput.value);
-  formData.append('category', categoryInput.value);  */
-/* https://developer.mozilla.org/en-US/docs/Web/API/Blob  */
